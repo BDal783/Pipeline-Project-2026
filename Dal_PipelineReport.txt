@@ -1,0 +1,10 @@
+Problem 2 
+The HCMV genome (GCF_000845245.1) has 188 CDS. 
+
+Problem 3 
+
+ Problem 4 
+Sample SRR5660030_1.fastq had 2259287 read pairs before and 1791414 read pairs after Bowtie2 filtering. 
+Sample SRR5660033_1.fastq had 2004530 read pairs before and 1389489 read pairs after Bowtie2 filtering. 
+Sample SRR5660044_1.fastq had 2730258 read pairs before and 1943095 read pairs after Bowtie2 filtering. 
+Sample SRR5660045_1.fastq had 2476889 read pairs before and 1289781 read pairs after Bowtie2 filtering. 
