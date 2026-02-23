@@ -9,28 +9,10 @@ if (!grepl(desired_wd, current_wd, fixed = TRUE)) {
   }  
 }
 
-sample_id <- c(
-  "Results/SRR5660030",
-  "Results/SRR5660033",
-  "Results/SRR5660044",
-  "Results/SRR5660045"
-)
+stab = read.table("Conditions.txt",header=TRUE)
 
-condition <- c(
-  "2dpi", "2dpi",
-  "6dpi", "6dpi"
-)
 
-so <- data.frame(
-  sample = sample_id,
-  condition = condition,
-  path = file.path(sample_id),
-  stringsAsFactors = FALSE
-)
-
-so$condition <- factor(so$condition)
-
-so <- sleuth_prep(so, ~ condition)
+so = sleuth_prep(stab)
 so <- sleuth_fit(so, ~ condition, "full")
 so <- sleuth_fit(so, ~ 1, "reduced")
 so <- sleuth_lrt(so, "reduced", "full")
@@ -39,11 +21,11 @@ so <- sleuth_lrt(so, "reduced", "full")
 sleuth_table = sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
 
 #making sure significant
-sleuth_significant <- sleuth_table |> filter(qval < 0.05) |> arrange(pval)
+sleuth_significant = dplyr::filter(sleuth_table, qval <= 0.05) |> dplyr::arrange(pval) 
 
 # Write TSV 
 write.table(
-  sleuth_significant[, c("target_id", "test_stat", "pval", "qval")],
+  sleuth_table[, c("target_id", "test_stat", "pval", "qval")],
   file = "results.tsv",
   sep = "\t",
   quote = FALSE,
