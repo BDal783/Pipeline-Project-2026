@@ -17,25 +17,30 @@ infile = arguments.input
 outfile = arguments.output
 report_file = arguments.report
 
+#inputs and outputs
 fasta = infile
 gff_file = "ncbi_dataset/data/GCF_000845245.1/genomic.gff"
 output_fasta = outfile
 
-# Load genome (HCMV has one chromosome)
+# Load genome 
 record = SeqIO.read(fasta, "fasta")
 genome_seq = record.seq
 
+#start counter
 cds_count = 0
 
+#open files
 with open(gff_file) as gff, open(output_fasta, "w") as out:
     for line in gff:
+        #making sure im reading the correct files
         if line.startswith("#"):
             continue
 
         fields = line.strip().split("\t")
         if len(fields) != 9:
             continue
-
+        
+        #assigning fields
         seqid, source, feature_type, start, end, score, strand, phase, attributes = fields
 
         if feature_type != "CDS":
@@ -61,11 +66,12 @@ with open(gff_file) as gff, open(output_fasta, "w") as out:
 
         if strand == "-":
             cds_seq = cds_seq.reverse_complement()
-
+        #write to outfile
         out.write(f">{protein_id}\n")
         out.write(str(cds_seq) + "\n")
-
+        #add to counter
         cds_count += 1
+    #opens report file and add to it
     with open(report_file,"w") as file:
         file.write("Problem 2 \n")
         file.write(f"The HCMV genome (GCF_000845245.1) has {cds_count} CDS. \n")
