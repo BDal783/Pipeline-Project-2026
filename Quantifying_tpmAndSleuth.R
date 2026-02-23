@@ -1,13 +1,19 @@
 library(sleuth)
 library(dplyr)
 
-setwd("~/Pipeline-Project-2026/Results")
+desired_wd <- "Pipeline-Project-2026"
+current_wd <- getwd()
+if (!grepl(desired_wd, current_wd, fixed = TRUE)) {
+  if (dir.exists(desired_wd)) {
+    setwd(desired_wd)
+  }  
+}
 
 sample_id <- c(
-  "SRR5660030",
-  "SRR5660033",
-  "SRR5660044",
-  "SRR5660045"
+  "Results/SRR5660030",
+  "Results/SRR5660033",
+  "Results/SRR5660044",
+  "Results/SRR5660045"
 )
 
 condition <- c(
@@ -18,32 +24,43 @@ condition <- c(
 so <- data.frame(
   sample = sample_id,
   condition = condition,
-  path = sample_id,
+  path = file.path(sample_id),
   stringsAsFactors = FALSE
 )
 
-print(so)
+so$condition <- factor(so$condition)
 
-file.exists(so$path)
-file.exists(file.path(so$path, "abundance.h5"))
-
-#everything below has been copied from in class example 
 so <- sleuth_prep(so, ~ condition)
-class(so)
 so <- sleuth_fit(so, ~ condition, "full")
 so <- sleuth_fit(so, ~ 1, "reduced")
 so <- sleuth_lrt(so, "reduced", "full")
 
 #extract the test results from the sleuth object 
-sleuth_table = sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE) 
+sleuth_table = sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
 
-#filter most significant results (FDR/qval < 0.05) and sort by pval
-sleuth_significant = dplyr::filter(sleuth_table, qval < 0.05) |> dplyr::arrange(pval) 
+#making sure significant
+sleuth_significant <- sleuth_table |> filter(qval < 0.05) |> arrange(pval)
 
-#print top 10 transcripts
-head(sleuth_significant, n=10)
+# Write TSV 
+write.table(
+  sleuth_significant[, c("target_id", "test_stat", "pval", "qval")],
+  file = "results.tsv",
+  sep = "\t",
+  quote = FALSE,
+  row.names = FALSE
+)
 
-#write FDR < 0.05 transcripts to file
-write.table(sleuth_significant[, c("target_id", "test_stat", "pval", "qval")], file="sleuth_results.txt",quote = FALSE,row.names = FALSE)
+# Write summary for pipeline report
+cat("Problem 3\n", file = "Dal_PipelineReport.txt", append = TRUE)
 
-#output is zero need to confirm before submission
+# Write the data frame
+write.table(
+  sleuth_significant[, c("target_id", "test_stat", "pval", "qval")],
+  file = "Dal_PipelineReport.txt",
+  append = TRUE,
+  sep = "\t",
+  quote = FALSE,
+  row.names = FALSE,
+  col.names = FALSE 
+)
+cat("\n", file = "Dal_PipelineReport.txt", append = TRUE)
