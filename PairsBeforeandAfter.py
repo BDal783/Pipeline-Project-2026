@@ -24,8 +24,9 @@ for r1, i in zip(r1_files, range(1, 5)):
     mapped_pairs = mapped_reads // 2
     pairs[r1.name]["mapped_pairs"] = mapped_pairs
 
-for r1_name in sorted(pairs):
-    total = pairs[r1_name]["total_pairs"]
-    mapped = pairs[r1_name]["mapped_pairs"]
-
-    print(f"{r1_name}\t{total}\t{mapped}")
+with open("Dal_PipelineReport.txt","a") as file:
+    file.write("\n Problem 4 \n")
+    for r1_name in sorted(pairs):
+        total = pairs[r1_name]["total_pairs"]
+        mapped = pairs[r1_name]["mapped_pairs"]
+        file.write("Sample "+str(r1_name)+" had "+str(total)+" read pairs before and "+str(mapped)+" read pairs after Bowtie2 filtering. \n")
