@@ -1,9 +1,25 @@
 #brendon dal comp 483
 from Bio import SeqIO
+import sys
+import argparse
 
-fasta = "ncbi_dataset/data/GCF_000845245.1/GCF_000845245.1_ViralProj14559_genomic.fna"
+#function to parse command line arguments
+def check_arg(args=None):
+    parser = argparse.ArgumentParser(description="making cd index")
+    parser.add_argument("-i", "--input", help="input file", required=True)
+    parser.add_argument("-o", "--output", help="output file", required=True)
+    parser.add_argument("-r", "--report", help="report file", required=True)
+    return parser.parse_args(args)
+
+#retrieve command line arguments
+arguments = check_arg(sys.argv[1:])
+infile = arguments.input
+outfile = arguments.output
+report_file = arguments.report
+
+fasta = infile
 gff_file = "ncbi_dataset/data/GCF_000845245.1/genomic.gff"
-output_fasta = "HCMV_CDS.fna"
+output_fasta = outfile
 
 # Load genome (HCMV has one chromosome)
 record = SeqIO.read(fasta, "fasta")
@@ -50,5 +66,7 @@ with open(gff_file) as gff, open(output_fasta, "w") as out:
         out.write(str(cds_seq) + "\n")
 
         cds_count += 1
+    with open(report_file,"w") as file:
+        file.write("Problem 2 \n")
+        file.write(f"The HCMV genome (GCF_000845245.1) has {cds_count} CDS. \n")
 
-print(f"The HCMV genome (GCF_000845245.1) has {cds_count} CDS.")
