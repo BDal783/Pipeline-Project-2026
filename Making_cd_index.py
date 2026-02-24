@@ -19,7 +19,7 @@ report_file = arguments.report
 
 #start counter
 cds_count = 0
-
+#open file and grabs id and fasta seq
 with open(outfile, "w") as out_f:
     for record in SeqIO.parse(infile, "fasta"):
         header = record.description
@@ -27,9 +27,9 @@ with open(outfile, "w") as out_f:
 
         out_f.write(f">{protein_id}\n")
         out_f.write(str(record.seq) + "\n")
-
+        #adds to counter
         cds_count += 1
-
+#reports back # of cds
 with open(report_file, "a") as report:
         report.write("Problem 2\n")
         report.write("The HCMV genome (GCF_000845245.1) has "+str(cds_count)+" CDS. \n")
