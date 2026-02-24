@@ -1,6 +1,7 @@
+#libraries
 library(sleuth)
 library(dplyr)
-
+#for some reason have to do this as directory isnt the same in r terminal
 desired_wd <- "Pipeline-Project-2026"
 current_wd <- getwd()
 if (!grepl(desired_wd, current_wd, fixed = TRUE)) {
@@ -9,6 +10,7 @@ if (!grepl(desired_wd, current_wd, fixed = TRUE)) {
   }  
 }
 
+#from this point on just copied the slides with the exception of making my own condition file
 stab = read.table("Conditions.txt",header=TRUE)
 
 
