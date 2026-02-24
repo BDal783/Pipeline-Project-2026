@@ -17,7 +17,6 @@ rule full_pipeline:
         index="index.idx"
     shell:
         """
-        set -euo pipefail
 
         # Download and prepare CDS
         datasets download genome accession GCF_000845245.1 --include gff3,rna,cds,protein,genome,seq-report --filename ncbi_dataset.zip
