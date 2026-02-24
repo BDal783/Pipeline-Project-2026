@@ -4,6 +4,25 @@ Comp 483 Pipeline project
 Required coding languages: Python, R
 Required python coding libraries: Biopython, pathlib, os 
 Required R libraries: dyplr and kallisto
+Required unix libraries: Snakemake, Bowtie 2, spades, blast, datasets
+
+Getting started:
+1) git clone the directory
+```
+git clone https://github.com/BDal783/Pipeline-Project-2026.git
+```
+2) Transfer into the directory
+```
+cd Pipeline-Project-2026
+```
+3) Run the snake file
+```
+snakemake --cores 1 --rerun-incomplete --latency-wait 120
+```
+This is done with 1 core as issues with it finishing faster than other processes occurred. While the flag --latency-wait makes sure that if a file struggles to load it will wait for it for 2 mins or the limit of time the project can run with the sample data.
+
+4) While Snake file is running
+
 Started working on problem 1
 1) used wget to get all SRR
 2) used fasterq-dump ./SRR
