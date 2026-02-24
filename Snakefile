@@ -26,6 +26,9 @@ rule full_pipeline:
         # Build kallisto index
         kallisto index -i {output.index} HCMV_CDS.fna
 
+        # Create Results directory for kallisto output
+        mkdir -p Results
+        
         # Quantify all samples
         kallisto quant -i {output.index} -o Results/SRR5660030 -b 30 -t 4 Data/SampleSRR5660030_1.fastq Data/SampleSRR5660030_2.fastq
         kallisto quant -i {output.index} -o Results/SRR5660033 -b 30 -t 4 Data/SampleSRR5660033_1.fastq Data/SampleSRR5660033_2.fastq
