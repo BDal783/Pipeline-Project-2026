@@ -2,8 +2,11 @@
 Comp 483 Pipeline project 
 
 Required coding languages: Python, R
-Required python coding libraries: Biopython, pathlib, os 
+
+Required python coding libraries: Biopython, pathlib, os
+
 Required R libraries: dyplr and kallisto
+
 Required unix libraries: Snakemake, Bowtie 2, spades, blast, datasets
 
 Getting started:
