@@ -28,8 +28,10 @@ This is done with 1 core, which has issues with finishing faster than other proc
 While it is running, it will prompt you about whether you would like to override certain files while it grabs databases for GCF_000845245.1 and Betaherpesvirinae. Whenever it asks to overwrite the READ.md say no, but for everything else, say yes. (you can say yes for the READ.me aswell if u really want)
 
 
+
+
 My steps:
-Started working on problem 1
+
 1) Used wget to get all SRR
 ```
 wget https://sra-pub-run-odp.s3.amazonaws.com/sra/SRR5660030/SRR5660030
