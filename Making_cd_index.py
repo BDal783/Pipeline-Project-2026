@@ -17,62 +17,20 @@ infile = arguments.input
 outfile = arguments.output
 report_file = arguments.report
 
-#inputs and outputs
-fasta = infile
-gff_file = "ncbi_dataset/data/GCF_000845245.1/genomic.gff"
-output_fasta = outfile
-
-# Load genome 
-record = SeqIO.read(fasta, "fasta")
-genome_seq = record.seq
-
 #start counter
 cds_count = 0
 
-#open files
-with open(gff_file) as gff, open(output_fasta, "w") as out:
-    for line in gff:
-        #making sure im reading the correct files
-        if line.startswith("#"):
-            continue
+with open(outfile, "w") as out_f:
+    for record in SeqIO.parse(infile, "fasta"):
+        header = record.description
+        protein_id = header.split("protein_id=")[1].split("]")[0]
 
-        fields = line.strip().split("\t")
-        if len(fields) != 9:
-            continue
-        
-        #assigning fields
-        seqid, source, feature_type, start, end, score, strand, phase, attributes = fields
+        out_f.write(f">{protein_id}\n")
+        out_f.write(str(record.seq) + "\n")
 
-        if feature_type != "CDS":
-            continue
-
-        # Parse attributes field
-        attr_dict = {}
-        for attr in attributes.split(";"):
-            if "=" in attr:
-                key, value = attr.split("=", 1)
-                attr_dict[key] = value
-
-        if "protein_id" not in attr_dict:
-            continue
-
-        protein_id = attr_dict["protein_id"]
-
-        # GFF is 1-based inclusive
-        start = int(start) - 1
-        end = int(end)
-
-        cds_seq = genome_seq[start:end]
-
-        if strand == "-":
-            cds_seq = cds_seq.reverse_complement()
-        #write to outfile
-        out.write(f">{protein_id}\n")
-        out.write(str(cds_seq) + "\n")
-        #add to counter
         cds_count += 1
-    #opens report file and add to it
-    with open(report_file,"w") as file:
-        file.write("Problem 2 \n")
-        file.write(f"The HCMV genome (GCF_000845245.1) has {cds_count} CDS. \n")
 
+with open(report_file, "a") as report:
+        report.write("Problem 2\n")
+        report.write("The HCMV genome (GCF_000845245.1) has "+str(cds_count)+" CDS. \n")
+        report.close

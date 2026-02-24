@@ -33,12 +33,12 @@ write.table(
 )
 
 # Write summary for pipeline report
-cat("Problem 3\n", file = "Dal_PipelineReport.txt", append = TRUE)
-
+cat("Problem 3\n", file = "PipelineReport.txt", append = TRUE)
+cat("target_id\ttest_stat\tpval\tqval\n", file = "PipelineReport.txt", append = TRUE)
 # Write the data frame
 write.table(
   sleuth_significant[, c("target_id", "test_stat", "pval", "qval")],
-  file = "Dal_PipelineReport.txt",
+  file = "PipelineReport.txt",
   append = TRUE,
   sep = "\t",
   quote = FALSE,

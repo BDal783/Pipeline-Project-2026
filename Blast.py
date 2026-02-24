@@ -9,17 +9,17 @@ contig_files = sorted(
 
 #downloading data base for betaherpsvirinae
 subfamily = 'datasets download virus genome taxon Betaherpesvirinae --include genome'
-#os.system(subfamily)
-#os.system("unzip ncbi_dataset.zip")
+os.system(subfamily)
+os.system("unzip ncbi_dataset.zip")
 
 
-with open("Dal_PipelineReport.txt", 'a') as prompt:
+with open("PipelineReport.txt", 'a') as prompt:
     prompt.write("\nProblem6\n")
     prompt.close()
 
 #making database
 db = 'makeblastdb -in ncbi_dataset/data/genomic.fna -out Betaherpesbirinae -title Betaherpesbirinae -dbtype nucl'
-#os.system(db)
+os.system(db)
 
 
 with open("longestContig.txt", "w") as report:
@@ -47,7 +47,7 @@ with open("longestContig.txt", "w") as report:
             lines = f.readlines()[:5]
             #print(lines)
             f.close()
-        with open("Dal_PipelineReport.txt", 'a') as file:
+        with open("PipelineReport.txt", 'a') as file:
             file.write(name+"\n")
             file.write('sacc\tpident\tlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n')
             for i in lines:
